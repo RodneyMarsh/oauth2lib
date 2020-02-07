@@ -1,7 +1,7 @@
 import json
 import logging
 from requests import Response
-from cStringIO import StringIO
+from io import BytesIO
 try:
     from werkzeug.exceptions import Unauthorized
 except ImportError:
@@ -36,7 +36,7 @@ class Provider(object):
         res.status_code = status_code
         if headers is not None:
             res.headers.update(headers)
-        res.raw = StringIO(body)
+        res.raw = BytesIO(body.encode("utf-8"))
         return res
 
     def _make_redirect_error_response(self, redirect_uri, err):
@@ -440,7 +440,7 @@ class AuthorizationProvider(Provider):
                 return self._make_redirect_error_response(u, err)
             else:
                 return self._invalid_redirect_uri_response()
-        except StandardError as exc:
+        except Exception as exc:
             self._handle_exception(exc)
 
             # Catch all other server errors
@@ -475,7 +475,7 @@ class AuthorizationProvider(Provider):
 
             # Catch missing parameters in request
             return self._make_json_error_response('invalid_request')
-        except StandardError as exc:
+        except Exception as exc:
             self._handle_exception(exc)
 
             # Catch all other server errors

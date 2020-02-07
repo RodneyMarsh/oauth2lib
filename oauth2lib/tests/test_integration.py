@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import unittest
 from oauth2lib.provider import AuthorizationProvider
 from oauth2lib.client import Client
@@ -85,25 +85,25 @@ class IntegrationTest(unittest.TestCase):
         response = self.provider.get_authorization_code_from_uri(uri)
 
         # Check status code
-        self.assertEquals(302, response.status_code)
+        self.assertEqual(302, response.status_code)
 
         # Check the non-query portion of the redirect URL
         redirect = response.headers['Location']
-        self.assertEquals(utils.url_dequery(redirect), MOCK_REDIRECT_URI)
+        self.assertEqual(utils.url_dequery(redirect), MOCK_REDIRECT_URI)
 
         # Check params in the redirect URL
         params = utils.url_query_params(redirect)
-        self.assertEquals(3, len(params))
-        self.assertEquals(40, len(params['code']))
-        self.assertEquals('123', params['param'])
-        self.assertEquals('example', params['scope'])
+        self.assertEqual(3, len(params))
+        self.assertEqual(40, len(params['code']))
+        self.assertEqual('123', params['param'])
+        self.assertEqual('example', params['scope'])
 
     def test_get_token_with_valid_authorization_code(self):
         """Test client's ability to get an access token from the provider."""
         data = self.client.get_token(code=MOCK_AUTHORIZATION_CODE,
                                      scope='example')
 
-        self.assertEquals(40, len(data['access_token']))
-        self.assertEquals(40, len(data['refresh_token']))
-        self.assertEquals('Bearer', data['token_type'])
-        self.assertEquals(3600, data['expires_in'])
+        self.assertEqual(40, len(data['access_token']))
+        self.assertEqual(40, len(data['refresh_token']))
+        self.assertEqual('Bearer', data['token_type'])
+        self.assertEqual(3600, data['expires_in'])

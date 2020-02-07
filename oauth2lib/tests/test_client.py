@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import unittest
 from oauth2lib.client import Client
 from oauth2lib import utils
@@ -23,7 +23,7 @@ class ClientTest(unittest.TestCase):
 
         # Check params
         params = utils.url_query_params(uri)
-        self.assertEquals('code', params['response_type'])
-        self.assertEquals('some.client', params['client_id'])
-        self.assertEquals('https://example.com/oauth2redirect', params['redirect_uri'])
-        self.assertEquals('app.state', params['state'])
+        self.assertEqual('code', params['response_type'])
+        self.assertEqual('some.client', params['client_id'])
+        self.assertEqual('https://example.com/oauth2redirect', params['redirect_uri'])
+        self.assertEqual('app.state', params['state'])
